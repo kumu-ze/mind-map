@@ -1,15 +1,17 @@
 const path = require('path')
 const isDev = process.env.NODE_ENV === 'development'
+const cloudBuild = process.env.KONON_CLOUD_BUILD === '1'
 const isLibrary = process.env.NODE_ENV === 'library'
 
 const WebpackDynamicPublicPathPlugin = require('webpack-dynamic-public-path')
 
 module.exports = {
-  publicPath: isDev ? '' : './dist',
-  outputDir: '../dist',
+  publicPath: cloudBuild ? '/mindmap/editor/' : (isDev ? '' : './dist'),
+  outputDir: cloudBuild ? '../cloud/editor' : '../dist',
   lintOnSave: false,
   productionSourceMap: false,
   filenameHashing: false,
+  parallel: cloudBuild ? false : undefined,
   transpileDependencies: ['yjs', 'lib0', 'quill'],
   chainWebpack: config => {
     // 移除 preload 插件
@@ -28,6 +30,7 @@ module.exports = {
     if (!isLibrary) {
       config.plugin('html').tap(args => {
         args[0].hash = true
+        if (cloudBuild) args[0].template = path.resolve(__dirname, 'public/cloud.html')
         return args
       })
     }
@@ -35,7 +38,8 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src/')
+        '@': path.resolve(__dirname, './src/'),
+        ...(cloudBuild ? { 'simple-mind-map': path.resolve(__dirname, '../simple-mind-map') } : {})
       }
     }
   },

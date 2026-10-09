@@ -340,7 +340,9 @@ function createHyperlinkNode() {
     }
   })
   if (hyperlinkTitle) {
-    node.add(SVG(`<title>${hyperlinkTitle}</title>`))
+    const titleNode = document.createElementNS('http://www.w3.org/2000/svg', 'title')
+    titleNode.textContent = hyperlinkTitle
+    node.node.appendChild(titleNode)
   }
   // 添加一个透明的层，作为鼠标区域
   a.rect(iconSize, iconSize).fill({ color: 'transparent' })
@@ -507,7 +509,9 @@ function createAttachmentNode() {
   const { icon, style } = this.mindMap.opt.attachmentIcon
   const node = new SVG().attr('cursor', 'pointer').size(iconSize, iconSize)
   if (attachmentName) {
-    node.add(SVG(`<title>${attachmentName}</title>`))
+    const titleNode = document.createElementNS('http://www.w3.org/2000/svg', 'title')
+    titleNode.textContent = attachmentName
+    node.node.appendChild(titleNode)
   }
   // 透明的层，用来作为鼠标区域
   node.add(new Rect().size(iconSize, iconSize).fill({ color: 'transparent' }))

@@ -1,3 +1,7 @@
+> **狐音云端分支**：独立账号、个人导图库、自动保存、历史记录与只读分享。
+> 使用说明与部署方法见 [CLOUD-README.md](./CLOUD-README.md)，在线入口为 [狐音导图](https://tools-konon.kumuze.top/mindmap/)。
+> 下方保留上游项目介绍与归属。
+
 <h1 align="center">Simple mind map</h1>
 
 [![npm-version](https://img.shields.io/npm/v/simple-mind-map)](https://www.npmjs.com/package/simple-mind-map)

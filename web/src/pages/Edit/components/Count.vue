@@ -58,7 +58,8 @@ export default {
     walk(data) {
       if (!data) return
       this.num++
-      this.textStr += String(data.data.text) || ''
+      const text = String(data.data.text || '')
+      this.textStr += data.data.richText ? text : text.replace(/[&<>]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[char]))
       if (data.children && data.children.length > 0) {
         data.children.forEach(item => {
           this.walk(item)

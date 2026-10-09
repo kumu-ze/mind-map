@@ -400,7 +400,9 @@ class Export {
   async svg(name) {
     this.mindMap.renderer.textEdit.hideEditTextBox()
     const { node } = await this.getSvgData()
-    node.first().before(SVG(`<title>${name}</title>`))
+    const titleNode = document.createElementNS('http://www.w3.org/2000/svg', 'title')
+    titleNode.textContent = name
+    node.node.insertBefore(titleNode, node.node.firstChild)
     await this.drawBackgroundToSvg(node)
     const str = node.svg()
     const res = await this.fixSvgStrAndToBlob(str)

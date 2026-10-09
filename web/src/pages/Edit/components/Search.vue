@@ -219,10 +219,9 @@ export default {
         if (data.richText) {
           name = getTextFromHtml(name)
         }
-        const reg = new RegExp(`${this.searchText.trim()}`, 'g')
-        const text = name.replace(reg, a => {
-          return `<span class="match">${a}</span>`
-        })
+        const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]))
+        const needle = this.searchText.trim()
+        const text = needle ? name.split(needle).map(escape).join('<span class="match">' + escape(needle) + '</span>') : escape(name)
         return {
           data: item,
           id,

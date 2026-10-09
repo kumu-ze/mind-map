@@ -30,6 +30,7 @@ const initApp = () => {
 
 // 是否处于接管应用模式
 if (window.takeOverApp) {
+  window.kononCloudStore = store
   window.initApp = initApp
   window.$bus = bus
 } else {

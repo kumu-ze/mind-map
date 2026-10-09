@@ -4,3 +4,9 @@ dist_electron
 simple-mind-map/dist
 simple-mind-map/types
 utools/dist
+# Cloud runtime and generated artifacts
+cloud/editor/
+.private/
+.env
+data/
+output/

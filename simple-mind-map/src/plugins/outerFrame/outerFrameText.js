@@ -2,7 +2,8 @@ import { Text, Rect, G } from '@svgdotjs/svg.js'
 import {
   getStrWithBrFromHtml,
   focusInput,
-  selectAllInput
+  selectAllInput,
+  htmlEscape
 } from '../../utils/index'
 
 const OUTER_FRAME_TEXT_EDIT_WRAP = 'outer-frame-text-edit-warp'
@@ -16,10 +17,12 @@ function createText(el, cur, range) {
     }
   }
   g.click(e => {
+    if (this.mindMap.opt.readonly) return
     e.stopPropagation()
     setActive()
   })
   g.on('dblclick', e => {
+    if (this.mindMap.opt.readonly) return
     e.stopPropagation()
     setActive()
     this.showEditTextBox(g)
@@ -29,6 +32,7 @@ function createText(el, cur, range) {
 
 //  显示文本编辑框
 function showEditTextBox(g) {
+  if (this.mindMap.opt.readonly) return
   this.mindMap.emit('before_show_text_edit')
   // 注册回车快捷键
   this.mindMap.keyCommand.addShortcut('Enter', () => {
@@ -71,7 +75,7 @@ function showEditTextBox(g) {
   this.textEditNode.style.lineHeight =
     textLines.length > 1 ? style.lineHeight : 'normal'
   this.textEditNode.style.zIndex = nodeTextEditZIndex
-  this.textEditNode.innerHTML = textLines.join('<br>')
+  this.textEditNode.innerHTML = textLines.map(htmlEscape).join('<br>')
   this.textEditNode.style.display = 'block'
   this.updateTextEditBoxPos(g)
   this.setIsShowTextEdit(true)

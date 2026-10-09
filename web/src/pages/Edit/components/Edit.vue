@@ -516,7 +516,16 @@ export default {
     },
 
     // 动态设置思维导图数据
-    setData(data) {
+    async setData(data) {
+      if (window.takeOverApp && window.parent.KononMindmapEditorBridge) {
+        try {
+          const fullData = data.root ? data : { root: data }
+          data = await window.parent.KononMindmapEditorBridge.sanitize(fullData)
+        } catch (error) {
+          this.$message.error(error.message || '导入失败')
+          return
+        }
+      }
       this.handleShowLoading()
       let rootNodeData = null
       if (data.root) {
@@ -629,6 +638,7 @@ export default {
 
     // 网页版试用提示
     webTip() {
+      if (window.takeOverApp) return
       const storageKey = 'webUseTip'
       const data = localStorage.getItem(storageKey)
       if (data) {
