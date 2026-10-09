@@ -8,4 +8,10 @@ execFileSync(process.execPath,[path.join(root,'web/node_modules/@vue/cli-service
 });
 await cp(path.join(root,'cloud/editor-adapter.js'),path.join(root,'cloud/editor/adapter.js'));
 await cp(path.join(root,'cloud/editor-theme.css'),path.join(root,'cloud/editor/theme.css'));
+// Preserve preview files referenced by the editor even when the legacy asset pipeline omits them.
+await mkdir(path.join(root,'cloud/editor/img'),{recursive:true});
+for (const [source,names] of [
+ ['web/src/assets/img/structures',['mindMap.jpg','timeline.jpg','fishbone.jpg']],
+ ['web/node_modules/simple-mind-map-plugin-themes/src/imgs',['classic15.png','classic12.png','classic11.png','classic6.jpg']]
+]) for (const name of names) await cp(path.join(root,source,name),path.join(root,'cloud/editor/img',name));
 console.log('Cloud editor built without changing upstream dist');

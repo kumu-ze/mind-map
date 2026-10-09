@@ -1,8 +1,243 @@
-:root{--cloud-accent:#82536d}.cloud-error{font:16px/1.7 "Segoe UI","Microsoft YaHei",sans-serif;padding:32px;color:#693d56}
-body,.toolbarContainer,.navigatorToolbar{font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif!important}
-.toolbarContainer{border-bottom:1px solid #e5e1e9!important;box-shadow:none!important}
-.el-button--primary{background:#82536d!important;border-color:#82536d!important}.el-button--text,.el-tabs__item.is-active{color:#82536d!important}.el-switch.is-checked .el-switch__core{background:#82536d!important;border-color:#82536d!important}
-.el-dialog{border-radius:16px!important}.el-dialog__header{padding-top:24px!important}.el-input__inner{border-radius:10px!important}.el-button{border-radius:10px!important}
-html[data-cloud-readonly="true"] .toolbarContainer,html[data-cloud-readonly="true"] .navigatorToolbar,html[data-cloud-readonly="true"] .sidebarTrigger,html[data-cloud-readonly="true"] .contextmenuContainer{display:none!important}
-html[data-cloud-readonly="true"] .editContainer{top:0!important}
-/* File management belongs to the cloud workbench; upstream filesystem controls are hidden by source flags. */
+/* Interface chrome only. Diagram nodes, palettes and theme previews retain their own colors.
+   The adapter copies the workbench's --km-* tokens into this frame. */
+:root {
+  --cloud-bg: var(--km-bg, #f5f6f8);
+  --cloud-surface: var(--km-surface, #fff);
+  --cloud-ink: var(--km-ink, #1f2329);
+  --cloud-muted: var(--km-muted, #5b636e);
+  --cloud-border: var(--km-border, #e1e4e8);
+  --cloud-field: var(--km-field, #8a929c);
+  --cloud-soft: var(--km-soft, #edf2f6);
+  --cloud-accent: var(--km-accent, #3f6684);
+  --cloud-hover: var(--km-hover, #33566f);
+  --cloud-on-accent: var(--km-on-accent, #fff);
+  --cloud-danger: var(--km-danger, #b03a3a);
+  --cloud-shadow: 0 3px 16px rgb(20 31 43 / 7%);
+}
+body.isDark {
+  --cloud-bg: var(--km-bg, #16181b);
+  --cloud-surface: var(--km-surface, #1e2125);
+  --cloud-ink: var(--km-ink, #e9ecef);
+  --cloud-muted: var(--km-muted, #a7afb8);
+  --cloud-border: var(--km-border, #33373d);
+  --cloud-field: var(--km-field, #6b737d);
+  --cloud-soft: var(--km-soft, #243039);
+  --cloud-accent: var(--km-accent, #9fc1dc);
+  --cloud-hover: var(--km-hover, #bcd5e8);
+  --cloud-on-accent: var(--km-on-accent, #10202d);
+  --cloud-danger: var(--km-danger, #f19a9a);
+  --cloud-shadow: 0 3px 18px rgb(0 0 0 / 18%);
+}
+body {
+  background-color: var(--cloud-bg);
+  color: var(--cloud-ink);
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+.cloud-error { padding: 32px; color: var(--cloud-ink); font: 16px/1.7 "Segoe UI", sans-serif; }
+.toolbarContainer .toolbar,
+.navigatorContainer,
+.contextmenuContainer {
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif !important;
+  color: var(--cloud-ink) !important;
+}
+.toolbarContainer .toolbar .toolbarBlock,
+.sidebarTriggerContainer .trigger,
+.navigatorContainer,
+.countContainer,
+.sidebarContainer,
+.searchContainer,
+.searchContainer .closeBtnBox,
+.searchContainer .searchResultList,
+.contextmenuContainer .listBox,
+.contextmenuContainer .subItems {
+  background: var(--cloud-surface) !important;
+  color: var(--cloud-ink) !important;
+  border-color: var(--cloud-border) !important;
+  box-shadow: var(--cloud-shadow) !important;
+}
+.toolbarContainer .toolbar .toolbarBlock { border-radius: 12px !important; }
+.toolbarContainer .toolbar .toolbarBtn { font-size: 13px; }
+.toolbarContainer .toolbar .toolbarBtn .icon {
+  background: transparent !important;
+  border-color: var(--cloud-border) !important;
+  border-radius: 6px !important;
+}
+.toolbarContainer .toolbar .toolbarBtn:not(.disabled):hover .icon,
+.toolbarContainer .toolbar .toolbarBtn.active .icon {
+  color: var(--cloud-accent) !important;
+  background: var(--cloud-soft) !important;
+  border-color: var(--cloud-accent) !important;
+}
+.toolbarContainer .toolbar .toolbarBtn.disabled { color: var(--cloud-muted) !important; opacity: .48; }
+.navigatorContainer { opacity: 1 !important; border: 1px solid var(--cloud-border); border-radius: 10px !important; }
+.navigatorContainer .item a,
+.navigatorContainer .item .btn,
+.scaleContainer .btn,
+.scaleContainer .scaleInfo,
+.scaleContainer .scaleInfo input { color: var(--cloud-ink) !important; }
+.countContainer { font-size: 12px !important; color: var(--cloud-muted) !important; border-radius: 6px !important; }
+.sidebarTriggerContainer .trigger { border: 1px solid var(--cloud-border); border-radius: 12px !important; }
+.sidebarTriggerContainer .trigger .triggerItem { color: var(--cloud-muted) !important; }
+.sidebarTriggerContainer .trigger .triggerItem:hover,
+.sidebarTriggerContainer .trigger .triggerItem.active {
+  color: var(--cloud-accent) !important;
+  background: var(--cloud-soft) !important;
+}
+.sidebarTriggerContainer .toggleShowBtn { background: var(--cloud-accent) !important; }
+.sidebarTriggerContainer .toggleShowBtn span { color: var(--cloud-on-accent) !important; }
+.sidebarContainer .sidebarHeader { color: var(--cloud-ink) !important; border-color: var(--cloud-border) !important; }
+.sidebarContainer .sidebarContent { color: var(--cloud-ink) !important; }
+.sidebarContainer .closeBtn,
+.searchContainer .searchInputBox .searchInfo { color: var(--cloud-muted) !important; }
+.searchContainer .searchResultItem:hover,
+.contextmenuContainer .item:not(.disabled):hover { background: var(--cloud-soft) !important; }
+.searchContainer .searchResultItem .match { color: var(--cloud-accent) !important; }
+.searchContainer .searchResultList .empty .text,
+.contextmenuContainer .item .desc { color: var(--cloud-muted) !important; }
+.contextmenuContainer .splitLine { background: var(--cloud-border) !important; }
+.contextmenuContainer .item.danger { color: var(--cloud-danger) !important; }
+.contextmenuContainer .item.disabled { color: var(--cloud-muted) !important; opacity: .5; }
+
+/* Element UI controls, including popups appended directly to body. */
+.el-dialog,
+.el-message-box,
+.el-select-dropdown,
+.el-dropdown-menu,
+.el-popover {
+  background: var(--cloud-surface) !important;
+  color: var(--cloud-ink) !important;
+  border: 1px solid var(--cloud-border) !important;
+  border-radius: 12px !important;
+}
+.el-dialog { border-radius: 16px !important; }
+.el-dialog__title, .el-message-box__title { color: var(--cloud-ink) !important; font-weight: 600; }
+.el-dialog__body, .el-message-box__content, .el-form-item__label { color: var(--cloud-muted) !important; }
+.el-dialog__header, .el-dialog__footer { border-color: var(--cloud-border) !important; }
+.el-dialog__headerbtn .el-dialog__close,
+.el-message-box__headerbtn .el-message-box__close { color: var(--cloud-muted) !important; }
+.el-input__inner, .el-textarea__inner {
+  background: var(--cloud-surface) !important;
+  color: var(--cloud-ink) !important;
+  border-color: var(--cloud-field) !important;
+  border-radius: 8px !important;
+}
+.el-input__inner::placeholder, .el-textarea__inner::placeholder { color: var(--cloud-muted) !important; opacity: .85; }
+.el-input:not(.is-disabled) .el-input__inner:focus,
+.el-textarea:not(.is-disabled) .el-textarea__inner:focus,
+.el-select .el-input.is-focus .el-input__inner { border-color: var(--cloud-accent) !important; box-shadow: 0 0 0 2px var(--cloud-soft); }
+.el-input.is-disabled .el-input__inner, .el-textarea.is-disabled .el-textarea__inner {
+  color: var(--cloud-muted) !important; border-color: var(--cloud-border) !important; background: var(--cloud-bg) !important;
+}
+.el-form-item.is-error .el-input__inner, .el-form-item.is-error .el-textarea__inner { border-color: var(--cloud-danger) !important; }
+.el-input-group__append, .el-input-group__prepend { background: var(--cloud-soft) !important; border-color: var(--cloud-field) !important; color: var(--cloud-ink) !important; }
+.el-button { border-radius: 8px !important; }
+.el-button--default {
+  background: var(--cloud-surface) !important;
+  border-color: var(--cloud-field) !important;
+  color: var(--cloud-ink) !important;
+}
+.el-button--default:not(.is-disabled):hover,
+.el-button--default:not(.is-disabled):focus {
+  background: var(--cloud-soft) !important; border-color: var(--cloud-accent) !important; color: var(--cloud-accent) !important;
+}
+.el-button--primary:not(.is-disabled) {
+  background: var(--cloud-accent) !important; border-color: var(--cloud-accent) !important; color: var(--cloud-on-accent) !important;
+}
+.el-button--primary:not(.is-disabled):hover, .el-button--primary:not(.is-disabled):focus {
+  background: var(--cloud-hover) !important; border-color: var(--cloud-hover) !important;
+}
+.el-button--primary.is-plain:not(.is-disabled) { background: var(--cloud-soft) !important; color: var(--cloud-accent) !important; }
+.el-button--text:not(.is-disabled) { background: transparent !important; border-color: transparent !important; color: var(--cloud-accent) !important; }
+.el-button--default.is-disabled, .el-button--primary.is-disabled, .el-button--text.is-disabled {
+  background: var(--cloud-bg) !important; border-color: var(--cloud-border) !important; color: var(--cloud-muted) !important; opacity: .55;
+}
+.el-button:focus-visible, .el-select:focus-visible { outline: 2px solid var(--cloud-accent); outline-offset: 3px; }
+.el-tabs__item { color: var(--cloud-muted) !important; }
+.el-tabs__item.is-active, .el-tabs__item:hover { color: var(--cloud-accent) !important; }
+.el-tabs__active-bar, .el-slider__bar { background-color: var(--cloud-accent) !important; }
+.el-tabs__nav-wrap::after, .el-slider__runway { background-color: var(--cloud-border) !important; }
+.el-slider__button { border-color: var(--cloud-accent) !important; }
+.el-switch.is-checked .el-switch__core,
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner,
+.el-radio__input.is-checked .el-radio__inner {
+  background-color: var(--cloud-accent) !important; border-color: var(--cloud-accent) !important;
+}
+.el-checkbox__inner, .el-radio__inner { background: var(--cloud-surface); border-color: var(--cloud-field); }
+.el-checkbox__input.is-checked .el-checkbox__inner::after { border-color: var(--cloud-on-accent) !important; }
+.el-checkbox__input.is-indeterminate .el-checkbox__inner::before, .el-radio__input.is-checked .el-radio__inner::after { background: var(--cloud-on-accent) !important; }
+.el-checkbox__label, .el-radio__label { color: var(--cloud-ink) !important; }
+.el-checkbox__input.is-disabled + .el-checkbox__label, .el-radio__input.is-disabled + .el-radio__label { color: var(--cloud-muted) !important; opacity: .55; }
+.el-radio-button__inner { background: var(--cloud-surface) !important; color: var(--cloud-ink) !important; border-color: var(--cloud-field) !important; }
+.el-radio-button__orig-radio:checked + .el-radio-button__inner {
+  background: var(--cloud-accent) !important; color: var(--cloud-on-accent) !important; border-color: var(--cloud-accent) !important; box-shadow: -1px 0 0 0 var(--cloud-accent) !important;
+}
+.el-select-dropdown__item, .el-dropdown-menu__item { color: var(--cloud-ink) !important; }
+.el-select-dropdown__item.selected { color: var(--cloud-accent) !important; font-weight: 600; }
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover, .el-dropdown-menu__item:not(.is-disabled):hover { background: var(--cloud-soft) !important; color: var(--cloud-accent) !important; }
+.el-select-dropdown__item.is-disabled, .el-dropdown-menu__item.is-disabled { color: var(--cloud-muted) !important; opacity: .5; }
+.el-loading-spinner .path { stroke: var(--cloud-accent) !important; }
+.el-loading-spinner .el-loading-text { color: var(--cloud-accent) !important; }
+
+/* Export menu colors are interface chrome; format icons and document samples remain intact. */
+.nodeExportDialog .downloadTypeList { background: var(--cloud-bg) !important; }
+.nodeExportDialog .downloadTypeItem.active { background: var(--cloud-soft) !important; }
+.nodeExportDialog .downloadTypeItem .name,
+.nodeExportDialog .nameInputBox { color: var(--cloud-ink) !important; }
+.nodeExportDialog .downloadTypeItem .checked { color: var(--cloud-accent) !important; }
+.nodeExportDialog .nameInputBox, .nodeExportDialog .btnBox { border-color: var(--cloud-border) !important; }
+.nodeExportDialog .contentName { color: var(--cloud-muted) !important; }
+.nodeExportDialog .contentValue.info {
+  color: var(--cloud-accent) !important; background: var(--cloud-soft) !important; border-color: var(--cloud-border) !important;
+}
+
+/* Keep the existing read-only visibility rules. */
+html[data-cloud-readonly="true"] .toolbarContainer,
+html[data-cloud-readonly="true"] .navigatorToolbar,
+html[data-cloud-readonly="true"] .sidebarTrigger,
+html[data-cloud-readonly="true"] .contextmenuContainer { display: none !important; }
+html[data-cloud-readonly="true"] .editContainer { top: 0 !important; }
+
+/* A closed panel must not cast a shadow into the canvas. */
+.sidebarContainer:not(.show) { box-shadow: none !important; }
+.nodeExportDialog .downloadTypeItem:not(.active) { background: transparent !important; }
+.nodeExportDialog .nameInput .name,
+.nodeExportDialog .contentValue { color: var(--cloud-ink) !important; }
+.nodeExportDialog .btnList { border-color: var(--cloud-border) !important; }
+html body .nodeExportDialog .el-dialog .el-dialog__body .el-checkbox .el-checkbox__input.is-checked + .el-checkbox__label { color: var(--cloud-ink) !important; }
+.el-dialog { max-width: calc(100vw - 32px) !important; }
+
+/* Use viewport width as well as upstream's mobile-device detection. */
+@media (max-width: 640px) {
+  .nodeExportDialog .el-dialog { width: calc(100vw - 24px) !important; max-width: calc(100vw - 24px) !important; margin: 16px auto !important; }
+  .nodeExportDialog .exportContainer { height: min(552px, calc(100svh - 40px)) !important; }
+  .nodeExportDialog .downloadTypeSelectBox { flex-direction: column !important; }
+  .nodeExportDialog .downloadTypeList {
+    display: flex !important; width: 100% !important; height: 66px !important;
+    overflow-x: auto !important; overflow-y: hidden !important; padding: 6px !important;
+    border-bottom: 1px solid var(--cloud-border); scrollbar-width: thin;
+  }
+  .nodeExportDialog .downloadTypeItem {
+    flex-shrink: 0; width: auto !important; min-width: 92px; padding: 8px 10px !important;
+    height: 44px !important; border-radius: 8px;
+  }
+  .nodeExportDialog .downloadTypeItem .typeIcon { margin-right: 8px !important; }
+  .nodeExportDialog .downloadTypeItem .name { font-size: 13px !important; }
+  .nodeExportDialog .downloadTypeItem .checked { display: none !important; }
+  .nodeExportDialog .downloadTypeContent { min-height: 0; min-width: 0; }
+  .nodeExportDialog .nameInputBox { height: 76px !important; padding: 8px 14px !important; gap: 12px; }
+  .nodeExportDialog .nameInput { min-width: 0; gap: 4px; }
+  .nodeExportDialog .nameInput .name { font-size: 13px !important; margin-bottom: 0 !important; }
+  .nodeExportDialog .nameInput .el-input { max-width: 100% !important; }
+  .nodeExportDialog .nameInputBox .closeBtn { flex-shrink: 0; padding: 8px; }
+  .nodeExportDialog .contentBox { padding: 16px !important; min-height: 0; }
+  .nodeExportDialog .contentRow { flex-direction: column !important; gap: 6px; }
+  .nodeExportDialog .contentName { margin: 0 !important; }
+  .nodeExportDialog .contentValue { min-width: 0; overflow-wrap: anywhere; }
+  .nodeExportDialog .contentValue.info { padding: 4px 8px !important; }
+  .nodeExportDialog .el-checkbox { white-space: normal; display: inline-flex; align-items: flex-start; }
+  .nodeExportDialog .el-checkbox__label { white-space: normal; line-height: 1.5; }
+  .nodeExportDialog .contentValue .valueSubItem { flex-wrap: wrap; gap: 6px; }
+  .nodeExportDialog .btnList { padding: 8px 16px !important; height: 60px !important; }
+  .nodeExportDialog .btnList .el-button { height: 38px !important; min-width: 84px; }
+}
